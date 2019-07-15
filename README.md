@@ -1,6 +1,9 @@
 # sf-sql-mirror
 Data import from salesforce into a mysql database using the bulk load API.
 
+### Dependencies
+- Node
+
 ### Run
 - Extract data from salesforce: `mkdir -p tmp/ && npm run extract`
 - Load extracted files from tmp/ to mysql: `npm run load`
