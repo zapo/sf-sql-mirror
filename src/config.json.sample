@@ -1,0 +1,61 @@
+{
+  "resources": [
+    {
+      "sfName": "Product2",
+      "tableName": "products",
+      "columns": [
+        "Id",
+        "Name",
+        "CustomField__c"
+      ]
+    },
+    {
+      "sfName": "Contact",
+      "tableName": "contacts",
+      "columns": [
+        "AccountId",
+        "Email",
+        "FirstName",
+        "Id",
+        "LastName",
+        "Name",
+        "OwnerId"
+      ]
+    },
+    {
+      "sfName": "Account",
+      "tableName": "accounts",
+      "columns": [
+        "Id",
+        "Name",
+        "OwnerId",
+        "Phone",
+        "Website"
+      ]
+    },
+    {
+      "sfName": "PricebookEntry",
+      "tableName": "pricebook_entries",
+      "columns": [
+        "CurrencyIsoCode",
+        "Id",
+        "IsActive",
+        "LastModifiedDate",
+        "Pricebook2Id",
+        "UnitPrice",
+        "UseStandardPrice",
+        "Product2Id"
+      ]
+    },
+    {
+      "sfName": "Pricebook2",
+      "tableName": "pricebooks",
+      "columns": [
+        "Id",
+        "IsActive",
+        "IsStandard",
+        "Name"
+      ]
+    }
+  ]
+}
