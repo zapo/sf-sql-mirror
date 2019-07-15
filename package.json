@@ -15,7 +15,7 @@
     "setup": "npm run build && node dist/setup.js"
   },
   "author": "Antoine Niek",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "@types/jsforce": "^1.9.7",
     "@types/node": "^12.6.2",
