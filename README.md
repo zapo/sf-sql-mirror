@@ -25,3 +25,7 @@ Create a config.json file of the exports, look at config.json.sample.
 A few envrionment variables are required to be setup to connect to salesforce and your database, you can have a look
 at .env.sample.
 
+### Development
+
+You can use `bin/start-db.sh` and `bin/connect-db.sh` (requires docker) to run a local ephemeral MySQL server and play with this.
+
