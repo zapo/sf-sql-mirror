@@ -17,12 +17,12 @@
   "author": "Antoine Niek",
   "license": "MIT",
   "devDependencies": {
-    "@types/jsforce": "^1.9.7",
+    "@types/jsforce": "^1.9.3",
     "@types/node": "^12.6.2",
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "jsforce": "^1.9.1",
+    "jsforce": "^1.9.3",
     "promise-mysql": "^4.0.4"
   }
 }
