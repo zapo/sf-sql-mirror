@@ -1,0 +1,33 @@
+version: '3.1'
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - database:/var/lib/mysql
+
+  loader:
+    build:
+      context: .
+    links:
+      - db
+    environment:
+      DB_NAME: "${DB_NAME}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_HOST: db
+      SF_USERNAME: "${SF_USERNAME}"
+      SF_PASSWORD: "${SF_PASSWORD}"
+      SF_SECURITY_TOKEN: "${SF_SECURITY_TOKEN}"
+    volumes:
+      - files:/app/tmp
+
+volumes:
+  database:
+  files:

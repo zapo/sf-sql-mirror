@@ -2,30 +2,18 @@
 Data import from salesforce into a mysql database using the bulk load API.
 
 ### Dependencies
-- Node
+- docker & docker-compose
 
-### Run
-- Extract data from salesforce: `mkdir -p tmp/ && npm run extract`
-- Load extracted files from tmp/ to mysql: `npm run load`
+### Build
+- A few envrionment variables are required to connect to properly build the database, see .env.sample.
+- docker-compose build
 
 ### Setup
 
-#### Create database schema from salesforce (optional)
+- Create a config.json file of the exports schema, look at config.json.sample.
+- Start the database with `docker-compose up -d db`
+- Setup the database schema with `docker-compose run loader npm run setup`
 
-You can recreate the tables managed in your config.json by infering data types and constraints from salesforce describe.
-Mostly useful for development.
-```
-npm run setup
-```
-
-#### config.json
-Create a config.json file of the exports, look at config.json.sample.
-
-#### Environment Variables
-A few envrionment variables are required to be setup to connect to salesforce and your database, you can have a look
-at .env.sample.
-
-### Development
-
-You can use `bin/start-db.sh` and `bin/connect-db.sh` (requires docker) to run a local ephemeral MySQL server and play with this.
-
+### Run
+- Extract data from salesforce: `docker-compose run loader npm run extract`
+- Load extracted data: `docker-compose run loader npm run extract`

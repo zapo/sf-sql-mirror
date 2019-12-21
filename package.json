@@ -10,9 +10,10 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "extract": "npm run build && node dist/extract.js",
-    "load": "npm run build && node dist/load.js",
-    "setup": "npm run build && node dist/setup.js"
+    "setup": "node dist/setup.js",
+    "extract": "node dist/extract.js",
+    "load": "node dist/load.js",
+    "start": "npm run extract && npm run load"
   },
   "author": "Antoine Niek",
   "license": "MIT",
