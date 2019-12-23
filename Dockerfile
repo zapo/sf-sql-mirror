@@ -4,7 +4,6 @@ COPY package-lock.json package.json ./
 RUN npm install
 COPY . ./
 RUN npm run build
-COPY dist .
 
 FROM node:13-stretch
 WORKDIR /app
