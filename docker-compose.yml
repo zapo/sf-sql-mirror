@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.7'
 
 services:
   db:
@@ -11,12 +11,16 @@ services:
       MYSQL_PASSWORD: "${DB_PASSWORD}"
     volumes:
       - database:/var/lib/mysql
+    networks:
+      - main
 
   loader:
     build:
       context: .
-    links:
+    depends_on:
       - db
+    networks:
+      - main
     environment:
       DB_NAME: "${DB_NAME}"
       DB_USERNAME: "${DB_USERNAME}"
@@ -31,3 +35,7 @@ services:
 volumes:
   database:
   files:
+
+networks:
+  main:
+
