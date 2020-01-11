@@ -5,7 +5,7 @@ import { connectSf, ResourceConfig, loadConfig } from './common';
 
 function extract(conn: jsforce.Connection, config: ResourceConfig): Promise<void> {
   const { sfName, tableName, columns } = config;
-  const path = `tmp/${tableName}.csv`;
+  const path = `/tmp/${tableName}.csv`;
   const log = (msg: string) => console.log(`${sfName}: ${msg}`)
   let SOQL = `SELECT ${columns.join(', ')} FROM ${sfName}`;
 

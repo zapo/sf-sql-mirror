@@ -13,6 +13,8 @@ services:
       - database:/var/lib/mysql
     networks:
       - main
+    volumes:
+      - files:/tmp/files
 
   loader:
     build:
@@ -31,7 +33,7 @@ services:
       SF_SECURITY_TOKEN: "${SF_SECURITY_TOKEN}"
       CONFIG_FILE: ./src/config.json
     volumes:
-      - files:/app/tmp
+      - files:/tmp/files
 
 volumes:
   database:
