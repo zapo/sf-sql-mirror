@@ -3,10 +3,10 @@ import * as mysql from 'promise-mysql';
 import { connectDb, loadConfig, ResourceConfig } from './common';
 
 async function load(conn: mysql.Connection, config: ResourceConfig): Promise<void> {
-  const filename = `/tmp/${config.tableName}.csv`;
+  const filename = `/tmp/loader/${config.tableName}.csv`;
   const truncate = `TRUNCATE TABLE ${config.tableName}`;
   const load = `
-    LOAD DATA LOCAL INFILE '${filename}' INTO TABLE ${config.tableName} CHARACTER SET utf8
+    LOAD DATA INFILE '${filename}' INTO TABLE ${config.tableName} CHARACTER SET utf8
     FIELDS TERMINATED BY ','
     ENCLOSED BY '"'
     LINES TERMINATED BY '\\n'
