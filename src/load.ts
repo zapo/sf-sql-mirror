@@ -1,9 +1,6 @@
 #!/usr/bin/env node
 import * as mysql from 'promise-mysql';
-import { connectDb } from './common';
-import { resources } from './config.json';
-
-type ResourceConfig = typeof resources[0];
+import { connectDb, loadConfig, ResourceConfig } from './common';
 
 async function load(conn: mysql.Connection, config: ResourceConfig): Promise<void> {
   const filename = `tmp/${config.tableName}.csv`;
@@ -29,7 +26,8 @@ async function main() {
   let db!: mysql.Connection;
   try {
     db = await connectDb();
-    await Promise.all(resources.map((config) => load(db, config)));
+    const config = await loadConfig();
+    await Promise.all(config.resources.map((rconf) => load(db, rconf)));
   } finally {
     if (db) { await db.end(); }
   }

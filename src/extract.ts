@@ -1,10 +1,7 @@
 #!/usr/bin/env node
 import * as jsforce from 'jsforce';
 import * as fs from 'fs';
-import { connectSf } from './common';
-import { resources } from './config.json';
-
-type ResourceConfig = typeof resources[0];
+import { connectSf, ResourceConfig, loadConfig } from './common';
 
 function extract(conn: jsforce.Connection, config: ResourceConfig): Promise<void> {
   const { sfName, tableName, columns } = config;
@@ -45,7 +42,8 @@ process.on('unhandledRejection', (up) => { throw(up) })
 
 async function main() {
   const connection = await connectSf();
-  await Promise.all(resources.map((config) => extract(connection, config)));
+  const config = await loadConfig();
+  await Promise.all(config.resources.map((rconf) => extract(connection, rconf)));
 }
 
 main();

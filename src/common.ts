@@ -1,5 +1,46 @@
 import * as jsforce from 'jsforce';
 import * as mysql from 'promise-mysql';
+import { promisify } from 'util';
+import * as fs from 'fs';
+
+const readFile = promisify(fs.readFile);
+
+interface Config {
+  resources: ResourceConfig[];
+}
+
+interface ResourceConfig {
+  sfName: string;
+  tableName: string;
+  columns: string[];
+}
+
+// Poorman runtime shape validation
+function isConfig(data: any): data is Config {
+  let valid = Array.isArray(data.resources);
+  for (const resource of data.resources) {
+    valid = valid && typeof resource.sfName === 'string';
+    valid = valid && typeof resource.tableName === 'string';
+    valid = valid && Array.isArray(resource.columns);
+    if (!valid) { break; }
+
+    for (const column of resource.columns) {
+      valid = valid && typeof column === 'string';
+      if (!valid) { break; }
+    }
+  }
+  return valid;
+}
+
+async function loadConfig(): Promise<Config> {
+  const configFile = process.env.CONFIG_FILE;
+  if (!configFile) { throw('Missing CONFIG_FILE'); }
+  const content = (await readFile(configFile)).toString();
+  const parsed = JSON.parse(content);
+
+  if(!isConfig(parsed)) { throw('Unexpected configuration shape.') };
+  return parsed
+}
 
 async function connectDb(): Promise<mysql.Connection> {
   const config = {
@@ -32,4 +73,4 @@ async function connectSf(): Promise<jsforce.Connection> {
   return connection;
 }
 
-export { connectSf, connectDb };
+export { connectSf, connectDb, loadConfig, Config, ResourceConfig };

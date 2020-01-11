@@ -3,10 +3,6 @@ WORKDIR /build
 COPY package-lock.json package.json ./
 RUN npm install
 COPY . ./
-
-ARG CONFIG_FILE="src/config.json"
-COPY ${CONFIG_FILE} ./src/
-
 RUN npm run build
 
 FROM node:13-stretch

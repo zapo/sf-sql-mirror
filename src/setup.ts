@@ -1,11 +1,8 @@
 #!/usr/bin/env node
 import * as mysql from 'promise-mysql';
 import * as jsforce from 'jsforce';
-import { connectSf } from './common';
+import { connectSf, ResourceConfig, loadConfig } from './common';
 import { connectDb } from './common';
-import { resources } from './config.json';
-
-type ResourceConfig = typeof resources[0];
 
 const TYPE_MAP: { [K in jsforce.SOAPType]: string } = {
   'tns:ID': 'varchar(255)',
@@ -27,7 +24,7 @@ const TYPE_MAP: { [K in jsforce.SOAPType]: string } = {
   'urn:SearchLayoutFieldsDisplayed': 'text'
 }
 
-function fieldDefinition(db: mysql.Connection, field: jsforce.Field): string {
+function fieldDefinition(db: mysql.Connection, field: jsforce.Field, resources: ResourceConfig[]): string {
   const def = [field.name, TYPE_MAP[field.soapType]];
   if (!field.nillable) { def.push('NOT NULL'); }
 
@@ -45,7 +42,7 @@ function fieldDefinition(db: mysql.Connection, field: jsforce.Field): string {
   return def.join(' ');
 }
 
-async function setup(sf: jsforce.Connection, db: mysql.Connection, config: ResourceConfig): Promise<void> {
+async function setup(sf: jsforce.Connection, db: mysql.Connection, config: ResourceConfig, others: ResourceConfig[]): Promise<void> {
   const { sfName, tableName, columns } = config;
   const meta = await sf.describe(sfName);
 
@@ -60,7 +57,7 @@ async function setup(sf: jsforce.Connection, db: mysql.Connection, config: Resou
 
   const createTable = `
   CREATE TABLE ${db.escapeId(tableName)} (
-  ${fields.map((f) => '  ' + fieldDefinition(db, f)).join(", \n  ")}
+  ${fields.map((f) => '  ' + fieldDefinition(db, f, others)).join(", \n  ")}
   );`;
 
   console.log(createTable)
@@ -74,8 +71,9 @@ async function main() {
   let db!: mysql.Connection;
   try {
     const sf = await connectSf();
+    const config = await loadConfig();
     db = await connectDb();
-    await Promise.all(resources.map((config) => setup(sf, db, config)));
+    await Promise.all(config.resources.map((rconf) => setup(sf, db, rconf, config.resources)));
   } finally {
     if (db) { await db.end(); }
   }

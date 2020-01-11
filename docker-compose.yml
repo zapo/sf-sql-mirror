@@ -29,6 +29,7 @@ services:
       SF_USERNAME: "${SF_USERNAME}"
       SF_PASSWORD: "${SF_PASSWORD}"
       SF_SECURITY_TOKEN: "${SF_SECURITY_TOKEN}"
+      CONFIG_FILE: ./src/config.json
     volumes:
       - files:/app/tmp
 
