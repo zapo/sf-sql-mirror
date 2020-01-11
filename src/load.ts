@@ -6,11 +6,11 @@ async function load(conn: mysql.Connection, config: ResourceConfig): Promise<voi
   const filename = `/tmp/loader/${config.tableName}.csv`;
   const truncate = `TRUNCATE TABLE ${config.tableName}`;
   const load = `
-    LOAD DATA INFILE '${filename}' INTO TABLE ${config.tableName} CHARACTER SET utf8
+    LOAD DATA LOCAL INFILE '${filename}' INTO TABLE ${config.tableName} CHARACTER SET utf8
     FIELDS TERMINATED BY ','
     ENCLOSED BY '"'
     LINES TERMINATED BY '\\n'
-    IGNORE 1 ROWS
+    IGNORE 1 LINES
     (${config.columns.join(', ')});
   `;
 
